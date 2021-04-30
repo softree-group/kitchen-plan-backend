@@ -1,0 +1,246 @@
+openapi: "3.0.2"
+info:
+  title: "Kitchen Plan"
+  version: "1.0"
+  description: "Kitchen plan api description"
+tags:
+  - name: recipes
+    description: "recipes operations"
+  - name: ingridients
+    description: "ingridients operations"
+paths:
+  "/recipes":
+    get:
+      tags:
+        - "recipes"
+      requestBody:
+        $ref: "#/components/requestBodies/Info"
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessInfo"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+  "/recipes/{id}":
+    get:
+      tags:
+        - "recipes"
+      parameters:
+        - $ref: "#/components/parameters/UserInput"
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessRecipeFull"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+  "/recipes/search":
+    get:
+      tags:
+        - "recipes"
+      requestBody:
+        $ref: "#/components/requestBodies/Search"
+      responses:
+        200:
+          $ref: "#/components/responses/SearchResponse"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        500:
+          $ref: "#/components/responses/InternalError"
+  "/ingridients":
+    get:
+      tags:
+        - "ingridients"
+      requestBody:
+        $ref: "#/components/requestBodies/Info"
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessInfo"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+  "/ingridients/{id}":
+    get:
+      tags:
+        - "ingridients"
+      parameters:
+        - $ref: "#/components/parameters/UserInput"
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessIngridientFull"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+  "/ingridients/search":
+    get:
+      tags:
+        - "ingridients"
+      requestBody:
+        $ref: "#/components/requestBodies/Search"
+      responses:
+        200:
+          $ref: "#/components/responses/SearchResponse"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        500:
+          $ref: "#/components/responses/InternalError"
+components:
+  requestBodies:
+    Search:
+      content:
+        application/text:
+          schema:
+            description: "User input"
+            type: string
+    Info:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InfoRequest"
+  parameters:
+    UserInput:
+      in: path
+      name: id
+      required: true
+      description: "Numeric ID"
+      schema:
+        type: number
+  responses:
+    SuccessInfo:
+      description: Array of all resource IDs
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/InfoRequest"
+    SuccessRecipeFull:
+      description: Full information about recipe
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/FullRecipeResponse"
+    SuccessIngridientFull:
+      description: Full information about ingridient
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/FullIngridientResponse"
+    SearchResponse:
+      description: Search respone
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/InfoResponse"
+    BadRequest:
+      description: Client send wrong request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+            example: { error: { code: 400, msg: "Error msg" } }
+    NotFound:
+      description: Data not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+            example: { error: { code: 404, msg: "Error msg" } }
+    InternalError:
+      description: Something went wrong
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+            example: { error: { code: 500, msg: "Error msg" } }
+  schemas:
+    InfoRequest:
+      type: object
+      required:
+        - resource
+        - limit
+        - since
+      properties:
+        resource:
+          type: array
+          items:
+            description: Resource IDs
+            type: number
+        limit:
+          type: number
+        since:
+          type: number
+    InfoResponse:
+      type: object
+      required:
+        - id
+        - type
+        - name
+        - time
+      properties:
+        id:
+          type: number
+        type:
+          type: string
+        name:
+          type: string
+        time:
+          type: number
+    FullIngridientResponse:
+      type: object
+      required:
+        - id
+        - name
+        - amount
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        amount:
+          type: number
+          minimum: 0
+    FullRecipeResponse:
+      type: object
+      required:
+        - id
+        - type
+        - name
+        - steps
+        - time
+      properties:
+        id:
+          type: number
+        type:
+          type: string
+        name:
+          type: string
+        steps:
+          type: array
+          items:
+            type: string
+        time:
+          type: number
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: number
+        message:
+          type: string
