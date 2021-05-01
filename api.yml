@@ -6,18 +6,36 @@ info:
 tags:
   - name: recipes
     description: "recipes operations"
-  - name: ingridients
-    description: "ingridients operations"
+  - name: ingredients
+    description: "ingredients operations"
 paths:
   "/recipes":
     get:
       tags:
         - "recipes"
-      requestBody:
-        $ref: "#/components/requestBodies/Info"
+      parameters:
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Since"
+        - $ref: "#/components/parameters/Title"
+        - in: query
+          name: type
+          schema:
+            type: string
+        - in: query
+          name: ingredients
+          schema:
+            type: array
+            items:
+              type: number
       responses:
         200:
-          $ref: "#/components/responses/SuccessInfo"
+          description: Array of all reciepts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ReceiptBase"
         400:
           $ref: "#/components/responses/BadRequest"
         404:
@@ -29,38 +47,35 @@ paths:
       tags:
         - "recipes"
       parameters:
-        - $ref: "#/components/parameters/UserInput"
+        - $ref: "#/components/parameters/IdInPath"
       responses:
         200:
-          $ref: "#/components/responses/SuccessRecipeFull"
+          description: Full reciept
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Receipt"
         400:
           $ref: "#/components/responses/BadRequest"
         404:
           $ref: "#/components/responses/NotFound"
         500:
           $ref: "#/components/responses/InternalError"
-  "/recipes/search":
-    get:
-      tags:
-        - "recipes"
-      requestBody:
-        $ref: "#/components/requestBodies/Search"
-      responses:
-        200:
-          $ref: "#/components/responses/SearchResponse"
-        400:
-          $ref: "#/components/responses/BadRequest"
-        500:
-          $ref: "#/components/responses/InternalError"
   "/ingridients":
     get:
       tags:
-        - "ingridients"
-      requestBody:
-        $ref: "#/components/requestBodies/Info"
+        - "ingredients"
+      parameters:
+        - $ref: "#/components/parameters/Title"
       responses:
         200:
-          $ref: "#/components/responses/SuccessInfo"
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/IngredientBase"
         400:
           $ref: "#/components/responses/BadRequest"
         404:
@@ -70,177 +85,127 @@ paths:
   "/ingridients/{id}":
     get:
       tags:
-        - "ingridients"
+        - "ingredients"
       parameters:
-        - $ref: "#/components/parameters/UserInput"
+        - $ref: "#/components/parameters/IdInPath"
       responses:
         200:
-          $ref: "#/components/responses/SuccessIngridientFull"
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ingredient"
         400:
           $ref: "#/components/responses/BadRequest"
         404:
           $ref: "#/components/responses/NotFound"
         500:
           $ref: "#/components/responses/InternalError"
-  "/ingridients/search":
-    get:
-      tags:
-        - "ingridients"
-      requestBody:
-        $ref: "#/components/requestBodies/Search"
-      responses:
-        200:
-          $ref: "#/components/responses/SearchResponse"
-        400:
-          $ref: "#/components/responses/BadRequest"
-        500:
-          $ref: "#/components/responses/InternalError"
 components:
-  requestBodies:
-    Search:
-      content:
-        application/text:
-          schema:
-            description: "User input"
-            type: string
-    Info:
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/InfoRequest"
   parameters:
-    UserInput:
+    Title:
+      in: query
+      name: title
+      schema:
+        type: string
+    Limit:
+      in: query
+      name: limit
+      schema:
+        type: number
+    Since:
+      in: query
+      name: limit
+      schema:
+        type: number
+    IdInPath:
       in: path
       name: id
       required: true
       description: "Numeric ID"
       schema:
         type: number
+
   responses:
-    SuccessInfo:
-      description: Array of all resource IDs
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: "#/components/schemas/InfoRequest"
-    SuccessRecipeFull:
-      description: Full information about recipe
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/FullRecipeResponse"
-    SuccessIngridientFull:
-      description: Full information about ingridient
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/FullIngridientResponse"
-    SearchResponse:
-      description: Search respone
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: "#/components/schemas/InfoResponse"
     BadRequest:
       description: Client send wrong request
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
-            example: { error: { code: 400, msg: "Error msg" } }
+            allOf:
+              - $ref: "#/components/schemas/Error"
+            example: "Bad request"
     NotFound:
       description: Data not found
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
-            example: { error: { code: 404, msg: "Error msg" } }
+            allOf:
+              - $ref: "#/components/schemas/Error"
+            example: "Not found"
     InternalError:
       description: Something went wrong
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
-            example: { error: { code: 500, msg: "Error msg" } }
+            allOf:
+              - $ref: "#/components/schemas/Error"
+            example: "Some fail"
+
   schemas:
-    InfoRequest:
+    IngredientBase:
       type: object
-      required:
-        - resource
-        - limit
-        - since
-      properties:
-        resource:
-          type: array
-          items:
-            description: Resource IDs
-            type: number
-        limit:
-          type: number
-        since:
-          type: number
-    InfoResponse:
-      type: object
-      required:
-        - id
-        - type
-        - name
-        - time
       properties:
         id:
+          type: number
+        title:
+          type: string
+        image:
+          type: string
+    Ingredient:
+      allOf:
+        - $ref: "#/components/schemas/IngredientBase"
+        - type: object
+          properties:
+            proteins:
+              type: number
+            fats:
+              type: number
+            carbohydrates:
+              type: number
+
+    ReceiptBase:
+      type: object
+      properties:
+        id:
+          type: number
+        image:
+          type: string
+        title:
+          type: string
+        time_to_cook:
           type: number
         type:
           type: string
-        name:
-          type: string
-        time:
-          type: number
-    FullIngridientResponse:
-      type: object
-      required:
-        - id
-        - name
-        - amount
-      properties:
-        id:
-          type: number
-        name:
-          type: string
-        amount:
-          type: number
-          minimum: 0
-    FullRecipeResponse:
-      type: object
-      required:
-        - id
-        - type
-        - name
-        - steps
-        - time
-      properties:
-        id:
-          type: number
-        type:
-          type: string
-        name:
-          type: string
-        steps:
-          type: array
-          items:
-            type: string
-        time:
-          type: number
+    Receipt:
+      allOf:
+        - $ref: "#/components/schemas/ReceiptBase"
+        - type: object
+          properties:
+            steps:
+              type: array
+              items:
+                type: string
+            ingredients:
+              type: array
+              items:
+                allOf:
+                  - $ref: "#/components/schemas/IngredientBase"
+                  - type: object
+                    properties:
+                      measure:
+                        type: string
+                      quantity:
+                        type: number
     Error:
-      type: object
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: number
-        message:
-          type: string
+      type: string
