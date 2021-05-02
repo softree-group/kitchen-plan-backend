@@ -6,7 +6,7 @@ import (
 )
 
 type KitchenPlanApp struct {
-	receiptsDB repository.KitchenPlanDBRepo
+	receiptsDB repository.KitchenPlanStorage
 }
 
 type KitchenPlanAppInterface interface {
@@ -16,7 +16,7 @@ type KitchenPlanAppInterface interface {
 	GetIngredient(id int) (*entity.Ingredient, error)
 }
 
-func NewKitchenPlanApp(receiptsDB repository.KitchenPlanDBRepo) *KitchenPlanApp {
+func NewKitchenPlanApp(receiptsDB repository.KitchenPlanStorage) *KitchenPlanApp {
 	return &KitchenPlanApp{receiptsDB}
 }
 

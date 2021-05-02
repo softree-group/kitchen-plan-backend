@@ -2,7 +2,7 @@ package repository
 
 import "github.com/softree-group/kitchen-plan-backend/domain/entity"
 
-type KitchenPlanDBRepo interface {
+type KitchenPlanStorage interface {
 	getIngredients
 	getIngredient
 	getReceipts
