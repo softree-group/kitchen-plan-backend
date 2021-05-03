@@ -2,10 +2,10 @@ package handlers
 
 import "github.com/valyala/fasthttp"
 
-func (handler *KitchenPlanHTTP) GetAllIngredients(ctx *fasthttp.RequestCtx) {
+func (handler *Handler) GetAllIngredients(ctx *fasthttp.RequestCtx) {
 
 }
 
-func (handler *KitchenPlanHTTP) GetIngredient(ctx *fasthttp.RequestCtx) {
+func (handler *Handler) GetIngredient(ctx *fasthttp.RequestCtx) {
 
 }

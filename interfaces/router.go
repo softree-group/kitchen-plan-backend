@@ -8,7 +8,7 @@ import (
 )
 
 func NewRouter() *router.Router {
-	kitchenPlanApp := application.NewKitchenPlanApp(persistance.NewKitchenPlanPostgres())
+	kitchenPlanApp := application.NewApp(persistance.NewPostgresStorage())
 	handler := handlers.NewKitchenPlanHTTP(kitchenPlanApp)
 
 	r := router.New()
