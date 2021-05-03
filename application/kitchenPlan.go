@@ -6,7 +6,7 @@ import (
 )
 
 type KitchenPlanApp struct {
-	receiptsDB repository.KitchenPlanStorage
+	storage repository.KitchenPlanStorage
 }
 
 type KitchenPlanAppInterface interface {
@@ -21,17 +21,17 @@ func NewKitchenPlanApp(receiptsDB repository.KitchenPlanStorage) *KitchenPlanApp
 }
 
 func (app *KitchenPlanApp) GetAllReceipts() ([]entity.Receipt, error) {
-	return app.receiptsDB.GetReceipts()
+	return app.storage.GetReceipts()
 }
 
 func (app *KitchenPlanApp) GetReceipt(id int) (*entity.Receipt, error) {
-	return app.receiptsDB.GetReceipt(id)
+	return app.storage.GetReceipt(id)
 }
 
 func (app *KitchenPlanApp) GetAllIngredients(title string) ([]entity.Ingredient, error) {
-	return app.receiptsDB.GetIngredients(title)
+	return app.storage.GetIngredients(title)
 }
 
 func (app *KitchenPlanApp) GetIngredient(id int) (*entity.Ingredient, error) {
-	return app.receiptsDB.GetIngredient(id)
+	return app.storage.GetIngredient(id)
 }

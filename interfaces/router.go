@@ -5,19 +5,18 @@ import (
 	"github.com/softree-group/kitchen-plan-backend/application"
 	"github.com/softree-group/kitchen-plan-backend/infrastructure/persistance"
 	"github.com/softree-group/kitchen-plan-backend/interfaces/handlers"
-	"net/http"
 )
 
 func NewRouter() *router.Router {
-	kitchenPlanApp := application.NewKitchenPlanApp(persistance.NewKitchenPlanPGS())
+	kitchenPlanApp := application.NewKitchenPlanApp(persistance.NewKitchenPlanPostgres())
 	handler := handlers.NewKitchenPlanHTTP(kitchenPlanApp)
 
 	r := router.New()
-	r.Handle(http.MethodGet, "/receipts", handler.GetAllReceipts)
-	r.Handle(http.MethodGet, "/receipts/{id}", handler.GetReceipt)
+	r.GET("/receipts", handler.GetAllReceipts)
+	r.GET("/receipts/{id}", handler.GetReceipt)
 
-	r.Handle(http.MethodGet, "/ingredients", handler.GetAllIngredients)
-	r.Handle(http.MethodGet, "/ingredients/{id}", handler.GetIngredient)
+	r.GET("/ingredients", handler.GetAllIngredients)
+	r.GET("/ingredients/{id}", handler.GetIngredient)
 
 	return r
 }

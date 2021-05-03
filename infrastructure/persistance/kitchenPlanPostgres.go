@@ -6,7 +6,7 @@ type KitchenPlanPGS struct {
 
 }
 
-func NewKitchenPlanPGS() *KitchenPlanPGS {
+func NewKitchenPlanPostgres() *KitchenPlanPGS {
 	return &KitchenPlanPGS{}
 }
 

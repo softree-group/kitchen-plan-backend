@@ -3,24 +3,16 @@ package repository
 import "github.com/softree-group/kitchen-plan-backend/domain/entity"
 
 type KitchenPlanStorage interface {
-	getIngredients
-	getIngredient
-	getReceipts
-	getReceipt
+	ingredientReceiver
+	receiptReceiver
 }
 
-type getIngredients interface {
-	GetIngredients(title string) ([]entity.Ingredient, error)
-}
-
-type getIngredient interface {
-	GetIngredient(id int) (*entity.Ingredient, error)
-}
-
-type getReceipts interface {
+type receiptReceiver interface {
 	GetReceipts() ([]entity.Receipt, error)
+	GetReceipt(id int) (*entity.Receipt, error)
 }
 
-type getReceipt interface {
-	GetReceipt(id int) (*entity.Receipt, error)
+type ingredientReceiver interface {
+	GetIngredients(title string) ([]entity.Ingredient, error)
+	GetIngredient(id int) (*entity.Ingredient, error)
 }
