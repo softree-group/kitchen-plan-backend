@@ -13,8 +13,8 @@ func NewApp(repos *repository.Repositories) *App {
 	return &App{repos.Storage}
 }
 
-func (app *App) GetAllReceipts() ([]entity.Receipt, error) {
-	return app.storage.GetReceipts()
+func (app *App) GetAllReceipts(selection entity.Selection) ([]entity.Receipt, error) {
+	return app.storage.GetReceipts(selection)
 }
 
 func (app *App) GetReceipt(id int) (*entity.Receipt, error) {
