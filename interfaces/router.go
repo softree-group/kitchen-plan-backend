@@ -3,15 +3,11 @@ package interfaces
 import (
 	"github.com/fasthttp/router"
 	"github.com/softree-group/kitchen-plan-backend/application"
-	"github.com/softree-group/kitchen-plan-backend/infrastructure"
 	"github.com/softree-group/kitchen-plan-backend/interfaces/handlers"
 )
 
-func NewRouter() *router.Router {
-	repos := infrastructure.NewRepositories()
-
-	kitchenPlanApp := application.NewApp(repos)
-	handler := handlers.NewKitchenPlanHTTP(kitchenPlanApp)
+func NewRouter(app *application.App) *router.Router {
+	handler := handlers.NewHandler(app)
 
 	r := router.New()
 	r.GET("/receipts", handler.GetAllReceipts)
