@@ -1,8 +1,8 @@
-package repository
+package application
 
 import "github.com/softree-group/kitchen-plan-backend/domain/entity"
 
-type ingredientReceiver interface {
-	GetIngredients(title string) ([]entity.Ingredient, error)
+type appIngredientReceiver interface {
+	etAllIngredients(title string) ([]entity.Ingredient, error)
 	GetIngredient(id int) (*entity.Ingredient, error)
 }
