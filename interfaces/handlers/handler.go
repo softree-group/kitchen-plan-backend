@@ -5,9 +5,9 @@ import (
 )
 
 type Handler struct {
-	kitchenPlan application.AppDelegator
+	kitchenPlan application.Application
 }
 
-func NewKitchenPlanHTTP(kitchenPlan application.AppDelegator) *Handler {
+func NewKitchenPlanHTTP(kitchenPlan application.Application) *Handler {
 	return &Handler{kitchenPlan}
 }

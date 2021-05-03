@@ -9,15 +9,8 @@ type App struct {
 	storage repository.Storage
 }
 
-type AppDelegator interface {
-	GetAllReceipts() ([]entity.Receipt, error)
-	GetReceipt(id int) (*entity.Receipt, error)
-	GetAllIngredients(title string) ([]entity.Ingredient, error)
-	GetIngredient(id int) (*entity.Ingredient, error)
-}
-
-func NewApp(receiptsDB repository.Storage) *App {
-	return &App{receiptsDB}
+func NewApp(storage repository.Storage) *App {
+	return &App{storage}
 }
 
 func (app *App) GetAllReceipts() ([]entity.Receipt, error) {
