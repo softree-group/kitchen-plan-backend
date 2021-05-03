@@ -3,12 +3,14 @@ package interfaces
 import (
 	"github.com/fasthttp/router"
 	"github.com/softree-group/kitchen-plan-backend/application"
-	"github.com/softree-group/kitchen-plan-backend/infrastructure/persistance"
+	"github.com/softree-group/kitchen-plan-backend/infrastructure"
 	"github.com/softree-group/kitchen-plan-backend/interfaces/handlers"
 )
 
 func NewRouter() *router.Router {
-	kitchenPlanApp := application.NewApp(persistance.NewPostgresStorage())
+	repos := infrastructure.NewRepositories()
+
+	kitchenPlanApp := application.NewApp(repos)
 	handler := handlers.NewKitchenPlanHTTP(kitchenPlanApp)
 
 	r := router.New()

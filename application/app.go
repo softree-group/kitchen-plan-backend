@@ -9,8 +9,8 @@ type App struct {
 	storage repository.Storage
 }
 
-func NewApp(storage repository.Storage) *App {
-	return &App{storage}
+func NewApp(repos *repository.Repositories) *App {
+	return &App{repos.Storage}
 }
 
 func (app *App) GetAllReceipts() ([]entity.Receipt, error) {

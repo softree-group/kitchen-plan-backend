@@ -1,6 +1,6 @@
 package repository
 
 type Storage interface {
-	ingredientReceiver
-	receiptReceiver
+	IngredientReceiver
+	ReceiptReceiver
 }
