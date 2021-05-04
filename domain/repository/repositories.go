@@ -1,5 +1,6 @@
 package repository
 
 type Repositories struct {
-	Storage Storage
+	ReceiptReceiver ReceiptReceiver
+	IngredientReceiver IngredientReceiver
 }
