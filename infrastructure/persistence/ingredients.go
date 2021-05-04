@@ -65,7 +65,7 @@ func (i IngredientsReceiver) Receive(id int) (*entity.Ingredient, error) {
 
 	err = tx.QueryRow(sqlReceiveIngredient, id).Scan(&ingredient.Id, &ingredient.Title, &ingredientImage)
 	if err != nil {
-		return nil, err
+		return nil, toEntityError(err)
 	}
 
 	if ingredientImage.Valid {

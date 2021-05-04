@@ -64,7 +64,7 @@ func (r ReceiptReceiver) Receive(id int) (*entity.Receipt, error) {
 	err = tx.QueryRow(sqlReceiveReceipt, id).Scan(&receipt.Id, &receipt.Type, &receipt.Image, &receipt.Title,
 		&steps, &timeToCook)
 	if err != nil {
-		return nil, err
+		return nil, toEntityError(err)
 	}
 	receipt.Steps = strings.Split(steps, "|~~~|")
 

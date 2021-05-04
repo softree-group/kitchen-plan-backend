@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"github.com/softree-group/kitchen-plan-backend/domain/entity"
 	"github.com/valyala/fasthttp"
 	"strconv"
 )
@@ -38,6 +39,10 @@ func (handler *Handler) ReceiveIngredient(ctx *fasthttp.RequestCtx) {
 
 	ingredient, err := handler.app.Ingredients.Receive(ingredientId)
 	if err != nil {
+		if err == entity.ErrNotFound {
+			ctx.Error(err.Error(), fasthttp.StatusNotFound)
+			return
+		}
 		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
 		return
 	}
