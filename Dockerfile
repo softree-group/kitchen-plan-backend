@@ -27,7 +27,7 @@ RUN go mod verify
 COPY . .
 
 # Build the telephony application
-RUN go build -o /go/bin/kitchen-plan-backend ${APP_DIR}/cmd/main/main.go
+RUN go build -o /go/bin/kitchen-plan-backend ${APP_DIR}/src/cmd/main/main.go
 
 # Create directory for logs
 RUN mkdir /var/log/kitchen-plan-backend
@@ -42,7 +42,7 @@ COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
 COPY --from=builder /go/bin/kitchen-plan-backend /go/bin/kitchen-plan-backend
 COPY --from=builder --chown=${APP_USER}:${APP_USER} /var/log/kitchen-plan-backend /var/log/kitchen-plan-backend
-COPY --from=builder --chown=${APP_USER}:${APP_USER} /go/src/kitchen-plan-backend/infrastructure/persistence/migrations /infrastructure/persistence/migrations
+COPY --from=builder --chown=${APP_USER}:${APP_USER} /go/src/kitchen-plan-backend/migrations /migrations
 
 # Change to a non-root user
 USER ${APP_USER}:${APP_USER}
