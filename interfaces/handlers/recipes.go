@@ -47,6 +47,11 @@ func (handler *Handler) FilterRecipes(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
+	if len(recipes) == 0 {
+		ctx.SetStatusCode(fasthttp.StatusNoContent)
+		return
+	}
+
 	body, err := json.Marshal(recipes)
 	if err != nil {
 		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)

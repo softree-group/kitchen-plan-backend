@@ -20,6 +20,11 @@ func (handler *Handler) FilterIngredients(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
+	if len(ingredients) == 0 {
+		ctx.SetStatusCode(fasthttp.StatusNoContent)
+		return
+	}
+
 	body, err := json.Marshal(ingredients)
 	if err != nil {
 		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
