@@ -40,7 +40,7 @@ func (storage *PostgresStorage) GetReceipts(selection entity.Selection) ([]entit
 	}()
 
 	query, args := chooseSql(selection)
-	out, err := tx.Query(query, args)
+	out, err := tx.Query(query, args...)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func (storage *PostgresStorage) GetReceipts(selection entity.Selection) ([]entit
 	for out.Next() {
 		receipt := entity.Receipt{}
 
-		err = out.Scan(&receipt.Id, &receipt.Image, &receipt.Title, &receipt.TimeToCook, receipt.Type)
+		err = out.Scan(&receipt.Id, &receipt.Image, &receipt.Title, &receipt.TimeToCook, &receipt.Type)
 		if err != nil {
 			return nil, err
 		}
@@ -71,7 +71,7 @@ func (storage *PostgresStorage) GetReceipts(selection entity.Selection) ([]entit
 }
 
 const (
-	allReceipts      = "select id, image, title, time, type from recipes"
+	allReceipts      = "select r.id, image, title, time, type from recipes r"
 	allLimitReceipts = allReceipts + " limit $1"
 
 	typeReceipts           = allReceipts + " where type=$1"
@@ -82,7 +82,9 @@ const (
 	titleReceipts      = allReceipts + " where title=$1"
 	titleLimitReceipts = titleReceipts + " limit $2"
 
-	ingredientsReceipts          = allReceipts + " where recipes_ingridients.ingridient_id in $1"
+	ingredientsReceipts          = allReceipts +
+		" join recipes_ingridients ri on r.id=ri.recept_id" +
+		" where ri.ingridient_id in $1"
 	ingredientsLimitReceipts     = ingredientsReceipts + " limit $2"
 	ingredientsTypeReceipts      = ingredientsReceipts + " and type=$2"
 	ingredientsTypeLimitReceipts = ingredientsTypeReceipts + " limit $3"

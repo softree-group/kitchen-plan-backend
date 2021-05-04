@@ -29,51 +29,51 @@ func chooseByType(selection entity.Selection) (string, []interface{}) {
 	args = append(args, selection.Type)
 
 	if selection.Title != "" {
-		args.Append(selection.Title)
+		args = append(args, selection.Title)
 
 		if selection.Limit != 0 {
-			args.Append(selection.Limit)
+			args = append(args, selection.Limit)
 			return typeTitleLimitReceipts, args
 		}
 		return typeTitleReceipts, args
 	}
 
 	if selection.Limit != 0 {
-		args.Append(selection.Limit)
+		args = append(args, selection.Limit)
 		return typeLimitReceipts, args
 	}
 
 	return typeReceipts, args
 }
 
-func chooseByTitle(selection entity.Selection) (string, pgx.QueryArgs) {
-	args := pgx.QueryArgs{}
-	args.Append(selection.Title)
+func chooseByTitle(selection entity.Selection) (string, []interface{}) {
+	var args []interface{}
+	args = append(args, selection.Title)
 
 	if selection.Limit != 0 {
-		args.Append(selection.Limit)
+		args = append(args, selection.Limit)
 		return titleLimitReceipts, args
 	}
 
 	return titleReceipts, args
 }
 
-func chooseByIngredients(selection entity.Selection) (string, pgx.QueryArgs) {
-	args := pgx.QueryArgs{}
-	args.Append(selection.Ingredients)
+func chooseByIngredients(selection entity.Selection) (string, []interface{}) {
+	var args []interface{}
+	args = append(args, selection.Ingredients)
 
 	if selection.Type != "" {
-		args.Append(selection.Type)
+		args = append(args, selection.Type)
 
 		if selection.Limit != 0 {
-			args.Append(selection.Limit)
+			args = append(args, selection.Limit)
 			return ingredientsTypeLimitReceipts, args
 		}
 		return ingredientsTypeReceipts, args
 	}
 
 	if selection.Limit != 0 {
-		args.Append(selection.Limit)
+		args = append(args, selection.Limit)
 		return ingredientsLimitReceipts, args
 	}
 
