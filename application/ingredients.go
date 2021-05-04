@@ -10,7 +10,7 @@ type Ingredients struct {
 }
 
 func (i Ingredients) Filter(title string) ([]entity.Ingredient, error) {
-	panic("implement me")
+	return i.reps.IngredientReceiver.Filter(title)
 }
 
 func (i Ingredients) Receive(id int) (*entity.Ingredient, error) {

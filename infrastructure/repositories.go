@@ -33,7 +33,6 @@ func New() *repository.Repositories {
 	ingredientReceiver := persistence.NewIngredientsReceiver(conn)
 	ingredientReceiver.Prepare()
 
-
 	return &repository.Repositories{
 		IngredientReceiver: ingredientReceiver,
 		ReceiptReceiver:    receiptReceiver,
