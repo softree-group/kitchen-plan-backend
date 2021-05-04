@@ -123,7 +123,7 @@ func (i IngredientsReceiver) Prepare() {
 	}
 
 	if _, err := i.db.Prepare(sqlIngredientsFilter,
-		"select id, title, image from ingredients where to_tsvector(title) @@ to_tsquery($1)"); err != nil {
+		"select id, title, image from ingredients where to_tsvector(title) @@ to_tsquery('russian', $1)"); err != nil {
 		logrus.Fatal(err)
 	}
 }
