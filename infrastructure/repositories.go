@@ -30,8 +30,12 @@ func New() *repository.Repositories {
 	receiptReceiver := persistence.NewReceiptReceiver(conn)
 	receiptReceiver.Prepare()
 
+	ingredientReceiver := persistence.NewIngredientsReceiver(conn)
+	ingredientReceiver.Prepare()
+
+
 	return &repository.Repositories{
-		IngredientReceiver: persistence.NewIngredientsReceiver(conn),
+		IngredientReceiver: ingredientReceiver,
 		ReceiptReceiver:    receiptReceiver,
 	}
 }

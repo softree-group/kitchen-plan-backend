@@ -21,6 +21,14 @@ func (r Recipes) Receive(id int) (*entity.Receipt, error) {
 		return nil, err
 	}
 	receipt.Image = viper.GetString(config.StaticStorageRoot) + receipt.Image
+
+	ingredients, err := r.reps.IngredientReceiver.ForReceipt(id)
+	if err != nil {
+		return nil, err
+	}
+
+	receipt.Ingredients = ingredients
+
 	return receipt, nil
 }
 
