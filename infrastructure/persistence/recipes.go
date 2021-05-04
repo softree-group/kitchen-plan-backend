@@ -24,9 +24,9 @@ func (r ReceiptReceiver) Filter(filter *entity.ReceiptFilter) ([]entity.Receipt,
 	}
 	defer func() { endTx(tx, err) }()
 
-	sqlFilter := genSQLFilter(filter)
+	sqlFilter, sqlArgs := genSQLFilter(filter)
 
-	rows, err := tx.Query(sqlFilter)
+	rows, err := tx.Query(sqlFilter, sqlArgs)
 	if err != nil {
 		return nil, err
 	}
