@@ -26,7 +26,7 @@ func genSQLFilter(filter *entity.ReceiptFilter) (string, []interface{}) {
 
 	if len(filter.Ingredients) > 0 {
 		sql += fmt.Sprintf(" and ARRAY[%s] @>"+
-			" ARRAY(select ingredient_id from recipes_ingredients where receipt_id = id)",
+			" ARRAY(select ingredient_id from recipes_ingredients where receipt_id = recipes.id)",
 			joinIntArr(filter.Ingredients))
 	}
 
