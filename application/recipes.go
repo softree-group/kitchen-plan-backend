@@ -20,8 +20,6 @@ func (r Recipes) Receive(id int) (*entity.Receipt, error) {
 	if err != nil {
 		return nil, err
 	}
-	receipt.Image = viper.GetString(config.StaticStorageRoot) + receipt.Image
-
 	ingredients, err := r.reps.IngredientReceiver.ForReceipt(id)
 	if err != nil {
 		return nil, err
@@ -29,6 +27,7 @@ func (r Recipes) Receive(id int) (*entity.Receipt, error) {
 
 	receipt.Ingredients = ingredients
 
+	receipt.SetImageRoot(viper.GetString(config.StaticStorageRoot))
 	return receipt, nil
 }
 

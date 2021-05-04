@@ -10,6 +10,12 @@ type Receipt struct {
 	Ingredients []Ingredient `json:"ingredients,omitempty"`
 }
 
+func (r *Receipt) SetImageRoot(root string) {
+	r.Image = root + r.Image
+}
+
+var _ ImageRootSetter = &Receipt{}
+
 type ReceiptFilter struct {
 	Limit       int
 	Title       string
