@@ -27,8 +27,11 @@ func New() *repository.Repositories {
 		logrus.Fatal("Fail to create db repository: ", err)
 	}
 
+	receiptReceiver := persistence.NewReceiptReceiver(conn)
+	receiptReceiver.Prepare()
+
 	return &repository.Repositories{
 		IngredientReceiver: persistence.NewIngredientsReceiver(conn),
-		ReceiptReceiver:    persistence.NewReceiptReceiver(conn),
+		ReceiptReceiver:    receiptReceiver,
 	}
 }

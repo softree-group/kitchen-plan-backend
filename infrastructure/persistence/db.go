@@ -13,7 +13,7 @@ import (
 
 func Migrate() {
 	m, err := migrate.New(
-		"file://infrastructure/persistent/migrations",
+		fmt.Sprintf("file://%s", viper.GetString(config.DBMigrations)),
 		fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
 			viper.GetString(config.DBUser),
 			viper.GetString(config.DBPassword),
@@ -37,4 +37,3 @@ func Migrate() {
 		logrus.Fatal("Fail to apply migrations: ", err)
 	}
 }
-

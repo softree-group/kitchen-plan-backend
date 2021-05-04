@@ -7,9 +7,12 @@ const (
 	LogFile  = "log.file"
 	LogLevel = "log.level"
 
-	DBName     = "db.name"
-	DBHost     = "db.host"
-	DBPort     = "db.port"
-	DBUser     = "db.user"
-	DBPassword = "db.password"
+	DBName       = "db.name"
+	DBHost       = "db.host"
+	DBPort       = "db.port"
+	DBUser       = "db.user"
+	DBPassword   = "db.password"
+	DBMigrations = "db.migrations"
+
+	StaticStorageRoot = "static.root"
 )

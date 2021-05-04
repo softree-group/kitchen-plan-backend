@@ -10,11 +10,11 @@ type IngredientsReceiver struct {
 	db *pgx.ConnPool
 }
 
-func (i IngredientsReceiver) GetIngredients(title string) ([]entity.Ingredient, error) {
+func (i IngredientsReceiver) Filter(title string) ([]entity.Ingredient, error) {
 	panic("implement me")
 }
 
-func (i IngredientsReceiver) GetIngredient(id int) (*entity.Ingredient, error) {
+func (i IngredientsReceiver) Receive(id int) (*entity.Ingredient, error) {
 	panic("implement me")
 }
 

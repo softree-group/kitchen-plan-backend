@@ -1,4 +1,5 @@
 package persistence
+
 //
 //import (
 //	"context"
@@ -23,7 +24,7 @@ package persistence
 //	return &PostgresStorage{conn: conn, timing: timing * time.Second}
 //}
 //
-//func (storage *PostgresStorage) GetReceipts(selection entity.Selection) ([]entity.Receipt, error) {
+//func (storage *PostgresStorage) Filter(selection entity.Selection) ([]entity.Receipt, error) {
 //	ctx, cancel := context.WithTimeout(context.Background(), storage.timing)
 //	defer cancel()
 //
@@ -90,14 +91,14 @@ package persistence
 //	ingredientsTypeLimitReceipts = ingredientsTypeReceipts + " limit $3"
 //)
 //
-//func (storage *PostgresStorage) GetReceipt(id int) (*entity.Receipt, error) {
+//func (storage *PostgresStorage) Receive(id int) (*entity.Receipt, error) {
 //	return nil, nil
 //}
 //
-//func (storage *PostgresStorage) GetIngredients(title string) ([]entity.Ingredient, error) {
+//func (storage *PostgresStorage) Filter(title string) ([]entity.Ingredient, error) {
 //	return nil, nil
 //}
 //
-//func (storage *PostgresStorage) GetIngredient(id int) (*entity.Ingredient, error) {
+//func (storage *PostgresStorage) Receive(id int) (*entity.Ingredient, error) {
 //	return nil, nil
 //}
