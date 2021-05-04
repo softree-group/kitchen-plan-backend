@@ -8,6 +8,6 @@ type IngredientReceiver interface {
 }
 
 type ReceiptReceiver interface {
-	Filter(filter entity.ReceiptFilter) ([]entity.Receipt, error)
+	Filter(filter *entity.ReceiptFilter) ([]entity.Receipt, error)
 	Receive(id int) (*entity.Receipt, error)
 }

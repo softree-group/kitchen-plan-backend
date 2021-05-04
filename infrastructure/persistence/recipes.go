@@ -1,6 +1,7 @@
 package persistence
 
 import (
+	"database/sql"
 	"github.com/jackc/pgx"
 	"github.com/sirupsen/logrus"
 	"github.com/softree-group/kitchen-plan-backend/domain/entity"
@@ -17,7 +18,36 @@ type ReceiptReceiver struct {
 }
 
 func (r ReceiptReceiver) Filter(filter *entity.ReceiptFilter) ([]entity.Receipt, error) {
-	panic("implement me")
+	tx, err := r.db.Begin()
+	if err != nil {
+		return nil, err
+	}
+	defer func() { endTx(tx, err) }()
+
+	sqlFilter := genSQLFilter(filter)
+
+	rows, err := tx.Query(sqlFilter)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var recipes []entity.Receipt
+
+	for rows.Next() {
+		receipt := entity.Receipt{}
+		timeToCook := sql.NullInt32{}
+		err = rows.Scan(&receipt.Id, &receipt.Title, &receipt.Image, &timeToCook)
+		if err != nil {
+			return nil, err
+		}
+		if timeToCook.Valid {
+			receipt.TimeToCook = int(timeToCook.Int32)
+		}
+		recipes = append(recipes, receipt)
+	}
+
+	return recipes, nil
 }
 
 func (r ReceiptReceiver) Receive(id int) (*entity.Receipt, error) {
@@ -29,12 +59,18 @@ func (r ReceiptReceiver) Receive(id int) (*entity.Receipt, error) {
 	var receipt entity.Receipt
 	var steps string
 
+	timeToCook := sql.NullInt32{}
+
 	err = tx.QueryRow(sqlReceiveReceipt, id).Scan(&receipt.Id, &receipt.Type, &receipt.Image, &receipt.Title,
-		&steps, &receipt.TimeToCook)
+		&steps, &timeToCook)
 	if err != nil {
 		return nil, err
 	}
 	receipt.Steps = strings.Split(steps, "|~~~|")
+
+	if timeToCook.Valid {
+		receipt.TimeToCook = int(timeToCook.Int32)
+	}
 
 	return &receipt, nil
 }

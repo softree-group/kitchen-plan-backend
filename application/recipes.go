@@ -11,8 +11,16 @@ type Recipes struct {
 	reps *repository.Repositories
 }
 
-func (r Recipes) Filter(filter entity.ReceiptFilter) ([]entity.Receipt, error) {
-	panic("implement me")
+func (r Recipes) Filter(filter *entity.ReceiptFilter) ([]entity.Receipt, error) {
+	recipes, err := r.reps.ReceiptReceiver.Filter(filter)
+	if err != nil {
+		return nil, err
+	}
+	root := viper.GetString(config.StaticStorageRoot)
+	for idx := 0; idx < len(recipes); idx++ {
+		recipes[idx].SetImageRoot(root)
+	}
+	return recipes, nil
 }
 
 func (r Recipes) Receive(id int) (*entity.Receipt, error) {

@@ -17,6 +17,7 @@ func (r *Receipt) SetImageRoot(root string) {
 var _ ImageRootSetter = &Receipt{}
 
 type ReceiptFilter struct {
+	Since       int
 	Limit       int
 	Title       string
 	Type        string

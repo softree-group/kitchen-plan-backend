@@ -2,12 +2,58 @@ package handlers
 
 import (
 	"encoding/json"
+	"github.com/sirupsen/logrus"
+	"github.com/softree-group/kitchen-plan-backend/domain/entity"
 	"github.com/valyala/fasthttp"
 	"strconv"
 )
 
 func (handler *Handler) FilterRecipes(ctx *fasthttp.RequestCtx) {
+	var filter entity.ReceiptFilter
+	since := string(ctx.QueryArgs().Peek("since"))
+	if since != "" {
+		sinceInt, err := strconv.Atoi(since)
+		if err != nil {
+			ctx.Error(err.Error(), fasthttp.StatusBadRequest)
+			return
+		}
+		filter.Since = sinceInt
+	}
 
+	limit := string(ctx.QueryArgs().Peek("limit"))
+	if limit != "" {
+		limitInt, err := strconv.Atoi(limit)
+		if err != nil {
+			ctx.Error(err.Error(), fasthttp.StatusBadRequest)
+			return
+		}
+		filter.Limit = limitInt
+	}
+
+	filter.Title = string(ctx.QueryArgs().Peek("title"))
+	filter.Type = string(ctx.QueryArgs().Peek("type"))
+	ingredients := ctx.QueryArgs().PeekMulti("ingredients")
+	if len(ingredients) > 0 {
+		ingredientsInt, err := convertBytesToInt(ingredients)
+		if err != nil {
+			ctx.Error(err.Error(), fasthttp.StatusBadRequest)
+			return
+		}
+		filter.Ingredients = ingredientsInt
+	}
+	logrus.Infof("FILTER: %+v", filter)
+}
+
+func convertBytesToInt(bytes [][]byte) ([]int, error) {
+	var result []int
+	for strId := range bytes {
+		idInt, err := strconv.Atoi(string(strId))
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, idInt)
+	}
+	return result, nil
 }
 
 func (handler *Handler) ReceiveReceipt(ctx *fasthttp.RequestCtx) {
