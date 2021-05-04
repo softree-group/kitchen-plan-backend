@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"github.com/sirupsen/logrus"
 	"github.com/softree-group/kitchen-plan-backend/domain/entity"
 	"github.com/valyala/fasthttp"
 	"strconv"
@@ -41,12 +40,26 @@ func (handler *Handler) FilterRecipes(ctx *fasthttp.RequestCtx) {
 		}
 		filter.Ingredients = ingredientsInt
 	}
-	logrus.Infof("FILTER: %+v", filter)
+
+	recipes, err := handler.app.Recipes.Filter(&filter)
+	if err != nil {
+		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
+		return
+	}
+
+	body, err := json.Marshal(recipes)
+	if err != nil {
+		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
+		return
+	}
+
+	ctx.SetBody(body)
+	ctx.SetContentType("application/json")
 }
 
 func convertBytesToInt(bytes [][]byte) ([]int, error) {
 	var result []int
-	for strId := range bytes {
+	for _, strId := range bytes {
 		idInt, err := strconv.Atoi(string(strId))
 		if err != nil {
 			return nil, err

@@ -21,7 +21,7 @@ func genSQLFilter(filter *entity.ReceiptFilter) (string, []interface{}) {
 		searchTitle := strings.ToLower(filter.Title) + ":*|" + strings.Title(filter.Title) + ":*"
 		args = append(args, searchTitle)
 
-		sql += fmt.Sprintf(" and and to_tsvector(title) @@ to_tsquery('russian',$%d)", len(args))
+		sql += fmt.Sprintf(" and to_tsvector(title) @@ to_tsquery('russian',$%d)", len(args))
 	}
 
 	if len(filter.Ingredients) > 0 {
@@ -32,18 +32,17 @@ func genSQLFilter(filter *entity.ReceiptFilter) (string, []interface{}) {
 
 	sql += " order by id"
 
-	var limit int
-	if filter.Limit != 0 {
-		limit = filter.Limit
+	if filter.Limit == 0 {
+		filter.Limit = 50
 	}
 
-	sql += fmt.Sprintf(" limit %d", limit)
+	sql += fmt.Sprintf(" limit %d", filter.Limit)
 	return sql, args
 }
 
 func joinIntArr(ids []int) string {
 	var arr []string
-	for id := range ids {
+	for _, id := range ids {
 		arr = append(arr, strconv.Itoa(id))
 	}
 	return strings.Join(arr, ",")

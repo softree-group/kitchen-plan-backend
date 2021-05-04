@@ -26,7 +26,7 @@ func (r ReceiptReceiver) Filter(filter *entity.ReceiptFilter) ([]entity.Receipt,
 
 	sqlFilter, sqlArgs := genSQLFilter(filter)
 
-	rows, err := tx.Query(sqlFilter, sqlArgs)
+	rows, err := tx.Query(sqlFilter, sqlArgs...)
 	if err != nil {
 		return nil, err
 	}
