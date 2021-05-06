@@ -43,12 +43,16 @@ COPY --from=builder /etc/group /etc/group
 COPY --from=builder /go/bin/kitchen-plan-backend /go/bin/kitchen-plan-backend
 COPY --from=builder --chown=${APP_USER}:${APP_USER} /var/log/kitchen-plan-backend /var/log/kitchen-plan-backend
 COPY --from=builder --chown=${APP_USER}:${APP_USER} /go/src/kitchen-plan-backend/migrations /migrations
+COPY --from=builder --chown=${APP_USER}:${APP_USER} /go/src/kitchen-plan-backend/config.yaml /etc/kitchen-plan-backend/config.yaml
+COPY --from=builder --chown=${APP_USER}:${APP_USER} /go/src/kitchen-plan-backend/log.log .
 
 # Change to a non-root user
 USER ${APP_USER}:${APP_USER}
 
+ADD config.yaml /etc/kitchen-plan-backend/config.yaml
+
 # Expose standart telephony port
-EXPOSE 8000
+EXPOSE 8080
 
 ENTRYPOINT ["/go/bin/kitchen-plan-backend"]
 

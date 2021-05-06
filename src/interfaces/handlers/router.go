@@ -15,5 +15,7 @@ func NewRouter(app *application.Application) *router.Router {
 	r.GET("/ingredients", handler.FilterIngredients)
 	r.GET("/ingredients/{id}", handler.ReceiveIngredient)
 
+	r.GET("/ping", handler.GetHealtCheck)
+
 	return r
 }
