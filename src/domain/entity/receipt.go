@@ -3,9 +3,9 @@ package entity
 type Receipt struct {
 	Id          int          `json:"id"`
 	Title       string       `json:"title"`
-	Type        string       `json:"type"`
-	Steps       []string     `json:"steps"`
-	TimeToCook  int          `json:"time_to_cook"`
+	Type        string       `json:"type,omitempty"`
+	Steps       []string     `json:"steps,omitempty"`
+	TimeToCook  int          `json:"time_to_cook,omitempty"`
 	Image       string       `json:"image"`
 	Ingredients []Ingredient `json:"ingredients,omitempty"`
 }
