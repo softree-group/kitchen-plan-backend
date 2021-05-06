@@ -10,8 +10,8 @@ func defaults() {
 }
 
 func mainDefaults() {
-	viper.SetDefault(IP, "127.0.0.1")
-	viper.SetDefault(Port, "8000")
+	viper.SetDefault(IP, "0.0.0.0")
+	viper.SetDefault(Port, "8080")
 }
 
 func logDefaults() {
