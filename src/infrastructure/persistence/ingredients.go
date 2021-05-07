@@ -64,6 +64,7 @@ func (i IngredientsReceiver) Receive(id int) (*entity.Ingredient, error) {
 	ingredientImage := sql.NullString{}
 
 	err = tx.QueryRow(sqlReceiveIngredient, id).Scan(&ingredient.Id, &ingredient.Title, &ingredientImage)
+
 	if err != nil {
 		return nil, toEntityError(err)
 	}
@@ -93,7 +94,8 @@ func (i IngredientsReceiver) ForReceipt(id int) ([]entity.Ingredient, error) {
 		ingredient := entity.Ingredient{}
 		quantity := sql.NullFloat64{}
 		measure := sql.NullString{}
-		err = rows.Scan(&ingredient.Id, &ingredient.Title, &ingredient.Image, &quantity, &measure)
+		image := sql.NullString{}
+		err = rows.Scan(&ingredient.Id, &ingredient.Title, &image, &quantity, &measure)
 		if err != nil {
 			return nil, err
 		}
@@ -102,6 +104,9 @@ func (i IngredientsReceiver) ForReceipt(id int) ([]entity.Ingredient, error) {
 		}
 		if measure.Valid {
 			ingredient.Measure = measure.String
+		}
+		if image.Valid {
+			ingredient.Image = image.String
 		}
 		ingredients = append(ingredients, ingredient)
 	}

@@ -82,7 +82,6 @@ func (handler *Handler) ReceiveReceipt(ctx *fasthttp.RequestCtx) {
 	}
 
 	receipt, err := handler.app.Recipes.Receive(receiptId)
-
 	if err != nil {
 		if err == entity.ErrNotFound {
 			ctx.Error(err.Error(), fasthttp.StatusNotFound)
