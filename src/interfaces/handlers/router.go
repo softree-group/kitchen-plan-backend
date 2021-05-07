@@ -16,6 +16,8 @@ func NewRouter(app *application.Application) *router.Router {
 	r.GET("/ingredients", handler.FilterIngredients)
 	r.GET("/ingredients/{id}", handler.ReceiveIngredient)
 
+	r.GET("/ping", handler.GetHealtCheck)
+
 	r.GET("/logs", logutils.GetLogs)
 	r.POST("/logs/reset", logutils.ResetLogs)
 	r.POST("/logs/changeLevel", logutils.ChangeLevel)

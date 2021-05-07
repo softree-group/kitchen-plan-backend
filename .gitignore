@@ -12,9 +12,13 @@
 *.out
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+vendor/
 .idea
 *.log
 config.yaml
 
 database/init/backup.sql
+
+# Configs
+config.yaml
+docker.yaml
