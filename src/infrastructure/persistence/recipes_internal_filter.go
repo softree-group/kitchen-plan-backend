@@ -25,9 +25,11 @@ func genSQLFilter(filter *entity.ReceiptFilter) (string, []interface{}) {
 	}
 
 	if len(filter.Ingredients) > 0 {
-		sql += fmt.Sprintf(" and ARRAY[%s] @>"+
+		strIds := joinIntArr(filter.Ingredients)
+		sql += fmt.Sprintf(" and ARRAY[%s] || ARRAY(select distinct parent_ingredient_id from" +
+			" overall_ingredients where ingredient_id in (%s)) @>"+
 			" ARRAY(select ingredient_id from recipes_ingredients where receipt_id = recipes.id)",
-			joinIntArr(filter.Ingredients))
+			strIds, strIds)
 	}
 
 	sql += " order by id"

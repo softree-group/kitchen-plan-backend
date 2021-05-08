@@ -25,7 +25,6 @@ func (r ReceiptReceiver) Filter(filter *entity.ReceiptFilter) ([]entity.Receipt,
 	defer func() { endTx(tx, err) }()
 
 	sqlFilter, sqlArgs := genSQLFilter(filter)
-	logrus.Debug(sqlFilter)
 	rows, err := tx.Query(sqlFilter, sqlArgs...)
 	if err != nil {
 		return nil, err
