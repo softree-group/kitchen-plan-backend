@@ -9,6 +9,7 @@ type Ingredient struct {
 	Proteins      float32 `json:"proteins,omitempty"`
 	Fats          float32 `json:"fats,omitempty"`
 	Carbohydrates float32 `json:"carbohydrates,omitempty"`
+	Energy 		  float32 `json:"energy,omitempty"`
 }
 
 func (i *Ingredient) SetImageRoot(root string) {
