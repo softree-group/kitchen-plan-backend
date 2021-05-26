@@ -62,11 +62,27 @@ func (i IngredientsReceiver) Receive(id int) (*entity.Ingredient, error) {
 	ingredient := entity.Ingredient{}
 
 	ingredientImage := sql.NullString{}
+	protein := sql.NullFloat64{}
+	fat := sql.NullFloat64{}
+	carbohydrate := sql.NullFloat64{}
 
-	err = tx.QueryRow(sqlReceiveIngredient, id).Scan(&ingredient.Id, &ingredient.Title, &ingredientImage)
+	err = tx.QueryRow(sqlReceiveIngredient, id).Scan(&ingredient.Id, &ingredient.Title, &ingredientImage,
+		&protein, &fat, &carbohydrate)
 
 	if err != nil {
 		return nil, toEntityError(err)
+	}
+
+	if protein.Valid {
+		ingredient.Proteins = float32(protein.Float64)
+	}
+
+	if fat.Valid {
+		ingredient.Fats = float32(fat.Float64)
+	}
+
+	if carbohydrate.Valid {
+		ingredient.Carbohydrates = float32(carbohydrate.Float64)
 	}
 
 	if ingredientImage.Valid {
@@ -123,7 +139,7 @@ func (i IngredientsReceiver) Prepare() {
 	}
 
 	if _, err := i.db.Prepare(sqlReceiveIngredient,
-		"select id, title, image from ingredients where id = $1"); err != nil {
+		"select id, title, image, protein, fat, carbohydrate from ingredients where id = $1"); err != nil {
 		logrus.Fatal(err)
 	}
 

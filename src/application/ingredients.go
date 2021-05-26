@@ -5,7 +5,6 @@ import (
 	"github.com/softree-group/kitchen-plan-backend/src/domain/entity"
 	"github.com/softree-group/kitchen-plan-backend/src/domain/repository"
 	"github.com/spf13/viper"
-	"math/rand"
 )
 
 type Ingredients struct {
@@ -30,10 +29,6 @@ func (i Ingredients) Receive(id int) (*entity.Ingredient, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	ingredient.Proteins = rand.Intn(40)
-	ingredient.Fats = rand.Intn(40)
-	ingredient.Carbohydrates = rand.Intn(40)
 
 	ingredient.SetImageRoot(viper.GetString(config.StaticStorageRoot))
 
