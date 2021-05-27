@@ -41,6 +41,16 @@ func (handler *Handler) FilterRecipes(ctx *fasthttp.RequestCtx) {
 		filter.Ingredients = ingredientsInt
 	}
 
+	recipesIdsStr := ctx.QueryArgs().PeekMulti("id")
+	if len(recipesIdsStr) > 0 {
+		recipesIds, err := convertBytesToInt(recipesIdsStr)
+		if err != nil {
+			ctx.Error(err.Error(), fasthttp.StatusBadRequest)
+			return
+		}
+		filter.ForRecipes = recipesIds
+	}
+
 	recipes, err := handler.app.Recipes.Filter(&filter)
 	if err != nil {
 		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)

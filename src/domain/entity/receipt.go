@@ -22,4 +22,5 @@ type ReceiptFilter struct {
 	Title       string
 	Type        string
 	Ingredients []int
+	ForRecipes  []int
 }

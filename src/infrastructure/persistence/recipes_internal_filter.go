@@ -24,6 +24,11 @@ func genSQLFilter(filter *entity.ReceiptFilter) (string, []interface{}) {
 		sql += fmt.Sprintf(" and to_tsvector(title) @@ to_tsquery('russian',$%d)", len(args))
 	}
 
+	if len(filter.ForRecipes) > 0 {
+		strIds := joinIntArr(filter.ForRecipes)
+		sql += fmt.Sprintf(" and id in (%s)" , strIds)
+	}
+
 	if len(filter.Ingredients) > 0 {
 		strIds := joinIntArr(filter.Ingredients)
 		sql += fmt.Sprintf(" and ARRAY[%s] || ARRAY(select distinct parent_ingredient_id from" +
